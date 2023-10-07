@@ -1,0 +1,101 @@
+@import "./App.css";
+
+.MiniContainer {
+  max-width: 40rem;
+  margin: 0 auto;
+}
+
+.Container {
+  padding-bottom: 2rem;
+  margin: 0 auto;
+  overflow: auto;
+}
+
+.ContentArea {
+  background-color: var(--dark-background-color);
+  color: var(--lightTextColor);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadowValue);
+  overflow: auto;
+  margin: 1.5rem 1rem 0 1rem;
+  padding-bottom: 1rem;
+}
+
+.Theme1 {
+  background-color: #E9B824;
+}
+
+.Theme2 {
+  background-color: #219C90;
+}
+
+.Theme3 {
+  background-color: #EE9322;
+}
+
+.HorizontalPadding {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.margin-top-s {
+  margin-top: 0.5rem;
+}
+
+.margin-top-m {
+  margin-top: 1rem;
+}
+
+.margin-top-l {
+  margin-top: 1.5rem;
+}
+
+.row {
+  width: 100%;
+}
+
+.columnIn2 {
+  float: left;
+  width: 50%;
+}
+
+.columnIn3 {
+  float: left;
+  width: 33.33%;
+}
+
+.column2In3 {
+  float: left;
+  width: 66.66%;
+}
+
+.columnIn4 {
+  float: left;
+  width: 25%;
+}
+
+.column3In4 {
+  float: left;
+  width: 75%;
+}
+
+.columnIn5 {
+  float: left;
+  width: 20%;
+}
+
+.column2In5 {
+  float: left;
+  width: 40%;
+}
+
+.column3In5 {
+  float: left;
+  width: 60%;
+}
+
+@media screen and (max-width: 700px) {
+  [class*="column"] {
+    width: 100%;
+  }
+}

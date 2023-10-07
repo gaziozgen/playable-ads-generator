@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en" style="overflow: hidden">
+  <head>
+    <!-- <title>Page Title</title> -->
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+    <style>
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        top: 0;
+        padding: 0;
+        margin: 0;
+        background-color: black;
+        font-family: Verdana, sans-serif;
+        font-weight: bold;
+      }
+
+      .BackgroundVideo {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        -webkit-filter: blur(25px);
+        -moz-filter: blur(25px);
+        -o-filter: blur(25px);
+        -ms-filter: blur(25px);
+        filter: blur(25px);
+      }
+
+      .WidthOrientedVideo {
+        width: 100%;
+      }
+
+      .HeightOrientedVideo {
+        height: 100vh;
+      }
+
+      .ContentArea {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .WidthOrientedContent {
+        width: 100%;
+        padding-top: calc(100% / (9 / 16));
+      }
+
+      .HeightOrientedContent {
+        height: 100vh;
+        width: calc(100vh * 9 / 16);
+      }
+
+      .CustomContentArea {
+        width: 100%;
+        height: 100%;
+      }
+
+      .MyVideo {
+        width: 100%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .TopBanner {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        background-color: black;
+        text-align: center;
+        color: white;
+        padding: 3% 0;
+        font-size: 500%;
+        display: none;
+      }
+
+      .Sound {
+        display: none;
+      }
+    </style>
+
+    <style>
+      .EndScreen {
+        display: none;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        top: 0;
+        opacity: 0;
+      }
+
+      .FadeIn {
+        display: block;
+        -webkit-animation-name: fadeIn;
+        animation-name: fadeIn;
+        -webkit-animation-duration: 1s;
+        animation-duration: 1s;
+        -webkit-animation-fill-mode: both;
+        animation-fill-mode: both;
+      }
+
+      @-webkit-keyframes fadeIn {
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
+      @keyframes fadeIn {
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
+      .EndScreenBackground {
+        display: inline-block;
+        width: 1000vw;
+        height: 1000vh;
+        transform: translate(-50%, -50%);
+        background-color: black;
+        opacity: 0.8;
+      }
+
+      .AppIcon {
+        position: absolute;
+        transform: translate(-50%, -100%);
+        top: 50%;
+        left: 50%;
+        width: 40%;
+        border-radius: 40px;
+      }
+
+      .AppName {
+        position: absolute;
+        transform: translate(-50%, 0);
+        top: 52%;
+        left: 50%;
+        width: 100%;
+        font-weight: bold;
+        color: white;
+        text-align: center;
+      }
+
+      .AppButton {
+        font-family: inherit;
+        position: absolute;
+        top: 65%;
+        left: 25%;
+        background-color: rgb(104, 173, 0);
+        height: 8%;
+        width: 50%;
+        border: 0;
+        border-radius: 10vh;
+        font-weight: bold;
+        color: white;
+        animation: crescendo 0.7s alternate infinite ease-out;
+      }
+
+      @keyframes crescendo {
+        0% {
+          transform: scale(0.9);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+    </style>
+
+    <style>
+      /* HERHANGI BIR PROBLEMDE BURAYA DA BAKILMALI*/
+      .ScaleElement {
+        position: absolute;
+        transform: translate(-50%, -50%);
+      }
+
+      /* BUTTON */
+      .ButtonParent {
+        position: absolute;
+        transform: translate(-50%, -50%);
+        /* left: 50%;
+        top: 50%; */
+      }
+      .ButtonAnimation {
+        position: relative;
+        animation: buttonAnimation 0.7s alternate infinite ease-out;
+      }
+      @keyframes buttonAnimation {
+        0% {
+          transform: scale(0.95);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      .Button {
+        position: absolute;
+        transform: translate(-50%, -50%);
+        top: 50%;
+        left: 50%;
+        font-family: inherit;
+        font-weight: bold;
+        /* width: 50%;
+        height: 15%; */
+        font-size: 30px;
+        border-radius: 10px;
+      }
+
+      /* TEXT */
+      .TextTarget {
+        position: absolute;
+        transform: translate(-50%, -50%);
+        /* bottom: 50%;
+        left: 50%; */
+      }
+      .TextAnimation {
+        position: relative;
+        animation: textMove 1s alternate infinite ease-in;
+      }
+      @keyframes textMove {
+        0% {
+          transform: scale(1);
+        }
+        100% {
+          transform: scale(0.9);
+        }
+      }
+      .Text {
+        position: absolute;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        width: 100vw;
+        /* color: white; */
+        text-shadow: 0 1.5px 0 #000000;
+        font-size: 12px;
+      }
+
+      /* HAND */
+      .HandTarget {
+        position: absolute;
+        transform: translate(-50%, -50%);
+        /* top: 50%;
+        left: 50%; */
+      }
+      .HandAnimation {
+        position: relative;
+        animation: handMove 0.5s alternate infinite ease-out;
+      }
+      @keyframes handMove {
+        0% {
+          top: 0;
+          left: 0;
+        }
+        100% {
+          top: 0.5rem;
+          left: 0.5rem;
+        }
+      }
+      .Hand {
+        position: absolute;
+        width: 20px;
+        transform: translate(-15%, -15%);
+      }
+    </style>
+  </head>
+
+  <body onclick="UserTouch()">
+    <video class="BackgroundVideo" id="bgVideo" autoplay muted>
+      <source type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+    <audio id="sound" class="Sound">
+      <source type="audio/mpeg" />
+      Your browser does not support the video tag.
+    </audio>
+    <div class="ContentArea" id="contentArea">
+      <video class="MyVideo" id="adVideo" autoplay muted>
+        <source type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+
+      <div class="TopBanner" id="topBanner">?Top Banner Content</div>
+
+      <div class="CustomContentArea" id="customContentArea"></div>
+
+      <div id="end" class="EndScreen">
+        <div class="EndScreenBackground"></div>
+        <img class="AppIcon" id="icon" />
+        <div id="name" class="AppName">?App Name</div>
+        <button id="but" class="AppButton">Play now!</button>
+      </div>
+    </div>
+
+    <script>
+      var videoSource = "./video.mp4";
+      var iconSource = "./icon.png";
+      var soundSource = "./sound.mp3";
+      var handSource = "./hand.png";
+      var elements = [];
+      var aspectRatio = 9 / 16;
+      var endPoint = -1;
+      var defaultTarget = "https://www.google.com/";
+      var useSmartLink = false;
+      var andTarget = "";
+      var iosTarget = "";
+      var topBannerActive = false;
+      var blurBackground = true;
+      var navigateStoreUnlockTime = 0;
+      var useBackgroundSound = false;
+      var backgroundSoundVolume = 1;
+
+      let contentWidth = 0;
+      var videoPlaying = true;
+      var nextElementIndex = 0;
+      var activeElementsWithTime = [];
+      var activeElementsOnPause = [];
+      var naviagteStoreOnNextTouch = false;
+      var initialized = false;
+
+      let contentArea;
+      let customContentArea;
+      let topBanner;
+      let mainVideo;
+      let bgVideo;
+      let sound;
+      let endScreen;
+      let icon;
+      let appName;
+      let endButton;
+
+      if (typeof mraid != "undefined" && mraid.getState() === "loading") {
+        mraid.addEventListener("ready", Initialize);
+        mraid.addEventListener("sizeChange", OnResize);
+      } else {
+        Initialize();
+        window.onresize = OnResize;
+      }
+
+      function Initialize() {
+        if (initialized) return;
+        console.log("Initialize");
+        contentArea = document.getElementById("contentArea");
+        customContentArea = document.getElementById("customContentArea");
+        topBanner = document.getElementById("topBanner");
+        mainVideo = document.getElementById("adVideo");
+        bgVideo = document.getElementById("bgVideo");
+        sound = document.getElementById("sound");
+        endScreen = document.getElementById("end");
+        icon = document.getElementById("icon");
+        appName = document.getElementById("name");
+        endButton = document.getElementById("but");
+
+        mainVideo.src = videoSource;
+        bgVideo.src = videoSource;
+        icon.src = iconSource;
+        if (useBackgroundSound) {
+          sound.src = soundSource;
+          sound.volume = backgroundSoundVolume;
+        }
+        if (!blurBackground) bgVideo.remove();
+        if (topBannerActive) topBanner.style.display = "block";
+        initialized = true;
+        OnResize();
+      }
+
+      function OnResize() {
+        console.log("OnResize");
+        if (!initialized) return;
+        //console.log("onResize");
+        let windowRatio = window.innerWidth / window.innerHeight;
+        contentArea.className = "ContentArea";
+        bgVideo.classList = "BackgroundVideo";
+        if (windowRatio > aspectRatio) {
+          contentArea.classList.add("HeightOrientedContent");
+          bgVideo.classList.add("WidthOrientedVideo");
+        } else {
+          contentArea.classList.add("WidthOrientedContent");
+          bgVideo.classList.add("HeightOrientedVideo");
+        }
+
+        contentWidth = getComputedStyle(contentArea).width;
+        contentWidth = Number(
+          contentWidth.substring(0, contentWidth.length - 2)
+        );
+        appName.style.fontSize = contentWidth * 0.075 + "px";
+        endButton.style.fontSize = contentWidth * 0.075 + "px";
+        endButton.style.height = contentWidth * 0.15 + "px";
+        topBanner.style.fontSize = contentWidth * 0.075 + "px";
+        icon.style.borderRadius = contentWidth * 0.1 + "px";
+
+        for (var i = 0; i < activeElementsWithTime.length; i++) {
+          ResizeElement(activeElementsWithTime[i]);
+        }
+
+        for (var i = 0; i < activeElementsOnPause.length; i++) {
+          ResizeElement(activeElementsOnPause[i]);
+        }
+      }
+
+      function ResizeElement(element) {
+        element.scaleElement.style.transform =
+          "scale(" + contentWidth * 0.01 * element.size + ")";
+      }
+
+      function UserTouch() {
+        console.log("UserTouch");
+        if (mainVideo.muted) {
+          mainVideo.muted = false;
+          if (useBackgroundSound) sound.play();
+        }
+
+        if (!videoPlaying) {
+          videoPlaying = true;
+          bgVideo.currentTime = mainVideo.currentTime;
+          mainVideo.play();
+          bgVideo.play();
+          while (activeElementsOnPause.length > 0) {
+            activeElementsOnPause.pop().positionElement.remove();
+          }
+
+          if (naviagteStoreOnNextTouch) {
+            naviagteStoreOnNextTouch = false;
+            OpenStore();
+          }
+        } else if (mainVideo.currentTime > navigateStoreUnlockTime) OpenStore();
+      }
+
+      function StoreLink() {
+        var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+        if (/android/i.test(userAgent) && useSmartLink) {
+          return andTarget;
+        }
+
+        // iOS detection from: http://stackoverflow.com/a/9039885/177710
+        if (
+          /iPad|iPhone|iPod/.test(userAgent) &&
+          !window.MSStream &&
+          useSmartLink
+        ) {
+          return iosTarget;
+        }
+
+        return defaultTarget;
+      }
+
+      function OpenStore() {
+        if (typeof mraid != "undefined") mraid.open(StoreLink());
+        else window.open(StoreLink(), "_blank");
+      }
+
+      function StopGame(time) {
+        if (videoPlaying) {
+          videoPlaying = false;
+          mainVideo.currentTime = time;
+          bgVideo.currentTime = time;
+          mainVideo.pause();
+          bgVideo.pause();
+        }
+      }
+
+      function CreateElement(element, positionClassName, animationClassName) {
+        const positionElement = document.createElement("div");
+        customContentArea.appendChild(positionElement);
+        positionElement.classList.add(positionClassName);
+        positionElement.style.left = element.posX + "%";
+        positionElement.style.top = 100 - element.posY + "%";
+        positionElement.style.zIndex = element.zIndex;
+        positionElement.style.opacity = element.opacity;
+
+        const animaitonElement = document.createElement("div");
+        positionElement.appendChild(animaitonElement);
+        animaitonElement.classList.add(animationClassName);
+
+        const scaleElement = document.createElement("div");
+        animaitonElement.appendChild(scaleElement);
+        scaleElement.classList.add("ScaleElement");
+
+        element.positionElement = positionElement;
+        element.animaitonElement = animaitonElement;
+        element.scaleElement = scaleElement;
+      }
+
+      setInterval(function () {
+        if (!initialized) return;
+        while (
+          nextElementIndex < elements.length &&
+          mainVideo.currentTime >= elements[nextElementIndex].time
+        ) {
+          var element = elements[nextElementIndex];
+
+          if (element.type == 0) {
+            // hand
+            StopGame(element.time);
+            if (element.navigateStore) naviagteStoreOnNextTouch = true;
+            CreateElement(element, "HandTarget", "HandAnimation");
+            const handImage = document.createElement("img");
+            element.scaleElement.appendChild(handImage);
+            handImage.classList.add("Hand");
+            handImage.src = handSource;
+            element.innerElement = handImage;
+            ResizeElement(element);
+            activeElementsOnPause.push(element);
+            //
+          } else if (element.type == 1) {
+            // text
+            CreateElement(element, "TextTarget", "TextAnimation");
+            const newText = document.createElement("div");
+            element.scaleElement.appendChild(newText);
+            newText.classList.add("Text");
+            newText.innerHTML = element.content;
+            newText.style.color = element.color;
+            element.innerElement = newText;
+            ResizeElement(element);
+            activeElementsWithTime.push(element);
+            //
+          } else if (element.type == 2) {
+            // button
+            if (element.stopTime) {
+              StopGame(element.time);
+              if (element.navigateStore) naviagteStoreOnNextTouch = true;
+            }
+            CreateElement(element, "ButtonParent", "ButtonAnimation");
+            const newButton = document.createElement("button");
+            element.scaleElement.appendChild(newButton);
+            newButton.classList.add("Button");
+            newButton.innerHTML = element.content;
+            newButton.style.width = element.width + "px";
+            newButton.style.height = element.height + "px";
+            newButton.style.fontSize = element.fontSize + "px";
+            newButton.style.borderRadius = element.borderRadius + "px";
+            newButton.style.borderWidth = element.borderWidth + "px";
+            newButton.style.color = element.textColor;
+            newButton.style.backgroundColor = element.color;
+            newButton.style.borderColor = element.borderColor;
+            element.innerElement = newButton;
+            ResizeElement(element);
+            activeElementsOnPause.push(element);
+            //
+          }
+          nextElementIndex++;
+        }
+
+        while (
+          0 < activeElementsWithTime.length &&
+          mainVideo.currentTime >= activeElementsWithTime[0].endTime
+        ) {
+          activeElementsWithTime[0].positionElement.remove();
+          activeElementsWithTime.shift();
+        }
+
+        if (
+          (endPoint == -1 ? mainVideo.duration : endPoint) <=
+          mainVideo.currentTime
+        ) {
+          endScreen.classList.add("FadeIn");
+        }
+
+        if (useBackgroundSound && sound.currentTime >= sound.duration) {
+          sound.pause();
+          sound.currentTime = 0;
+          sound.play();
+        }
+      }, 20);
+    </script>
+  </body>
+</html>
