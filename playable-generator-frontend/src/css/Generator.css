@@ -20,6 +20,12 @@
   cursor: pointer;
 }
 
+.ElementButton:hover {
+  background-color: var(--light-background-color);
+  color: var(--darkTextColor);
+  border-width: 0;
+}
+
 .Iframe {
   width: 100%;
   height: calc(16 / 9 * var(--phone-screen-width));

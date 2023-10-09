@@ -3,45 +3,80 @@ import defaultFile from "../assets/default.txt";
 import "../css/Generator.css";
 import hand1 from "../assets/hands/hand.png";
 import TextInput from "./TextInput";
-import FileInput from "./FileInput";
 import ToggleInput from "./ToggleInput";
+import FileInput from "./FileInput";
+import Preview from "./Preview";
+import VideoController from "./VideoController";
+import ElementInspector from "./ElementInspector";
+import ElementMenu from "./ElementMenu";
 
 const Generator = ({}) => {
+  const [generatedFile, setGeneratedFile] = useState();
   const [state, setState] = useState(0);
   const [isBusy, setIsBusy] = useState(false);
   const videoRef = useRef(null);
 
   const [appName, setAppName] = useState("My Gentlemen's Club");
+  const handleAppNameChange = (event) => setAppName(event.target.value);
+
   const [defaultTarget, setDefaultTarget] = useState(
     "https://play.google.com/store/apps/details?id=com.voyager.mygentlemanclub"
   );
+  const handleDefaultTargetChange = (event) =>
+    setDefaultTarget(event.target.value);
+
+  const [video, setVideo] = useState();
+  const handleVideoChange = (e) => setVideo(e.target.files[0]);
+
+  const [icon, setIcon] = useState();
+  const handleIconChange = (e) => setIcon(e.target.files[0]);
+
+  const [endPoint, setEndPoint] = useState(-1);
+  const handleEndPointChange = (event) =>
+    setEndPoint(formatNumber(endPoint, event));
+
+  const [navigateStoreUnlockTime, setNavigateStoreUnlockTime] = useState(0);
+  const handleNavigateStoreUnlockTimeChange = (event) =>
+    setNavigateStoreUnlockTime(formatNumber(navigateStoreUnlockTime, event));
+
+  const [useSmartLink, setUseSmartLink] = useState(false);
+  const handleUseSmartLinkChange = () => setUseSmartLink(!useSmartLink);
+
   const [androidTarget, setAndroidTarget] = useState(
     "https://play.google.com/store/apps/details?id=com.voyager.mygentlemanclub"
   );
+  const handleAndTargetChange = (event) => setAndroidTarget(event.target.value);
+
   const [iosTarget, setIosTarget] = useState(
     "https://apps.apple.com/ae/app/my-gentlemens-club/id6451375423"
   );
-  const [video, setVideo] = useState();
-  const [icon, setIcon] = useState();
+  const handleIosTargetChange = (event) => setIosTarget(event.target.value);
 
-  const [iframeRefreshCount, setIframeRefreshCount] = useState(0);
-  const [generatedFile, setGeneratedFile] = useState();
-  const [endPoint, setEndPoint] = useState(-1);
   const [topBannerActive, setTopBannerActive] = useState(false);
+  const handleTopBannerActiveChange = () =>
+    setTopBannerActive(!topBannerActive);
+
   const [topBannerText, setTopBannerText] = useState("");
-  const [useSmartLink, setUseSmartLink] = useState(false);
+  const handleTopBannerTextChange = (event) =>
+    setTopBannerText(event.target.value);
+
   const [useBackgroundSound, setUseBackgroundSound] = useState(false);
-  const [backgroundSoundVolume, setBackgroundSoundVolume] = useState(1);
+  const handleUseBgSoundChange = () =>
+    setUseBackgroundSound(!useBackgroundSound);
+
   const [backgroundSound, setBackgroundSound] = useState();
+  const handleBgSoundChange = (e) => setBackgroundSound(e.target.files[0]);
+
+  const [backgroundSoundVolume, setBackgroundSoundVolume] = useState(1);
+  const handleBgSoundVolumeChange = (event) =>
+    setBackgroundSoundVolume(formatNumber(backgroundSoundVolume, event));
+
   const [blurActive, setBlurActive] = useState(true);
-  const [navigateStoreUnlockTime, setNavigateStoreUnlockTime] = useState(0);
+  const handleBlurActiveChange = () => setBlurActive(!blurActive);
 
   const [elements, setElements] = useState([]);
-  const [selectedElementID, setSelectedElementID] = useState(null);
-  const [nextElementID, setNextElementID] = useState(0);
-  const selectedElement = elements.find(
-    (element) => element.id == selectedElementID
-  );
+  const [selectedElementID, setSelectedElementID] = useState(null); // alınacak
+
 
   const memoizedVideo = useMemo(
     () =>
@@ -60,137 +95,14 @@ const Generator = ({}) => {
     [video]
   );
 
-  const memoizedIframe = useMemo(
-    () =>
-      generatedFile ? (
-        <iframe
-          key={iframeRefreshCount}
-          className="Iframe"
-          src={URL.createObjectURL(generatedFile)}
-        ></iframe>
-      ) : (
-        <div></div>
-      ),
-    [iframeRefreshCount, generatedFile]
-  );
-
-  const handleAppNameChange = (event) => setAppName(event.target.value);
-  const handleDefaultTargetChange = (event) =>
-    setDefaultTarget(event.target.value);
-  const handleAndroidTargetChange = (event) =>
-    setAndroidTarget(event.target.value);
-  const handleIosTargetChange = (event) => setIosTarget(event.target.value);
-  const handleEndPointChange = (event) =>
-    setEndPoint(formatNumber(endPoint, event));
-  const handleUseSmartLinkChange = () => setUseSmartLink(!useSmartLink);
-  const handleTopBannerActiveChange = () =>
-    setTopBannerActive(!topBannerActive);
-  const handleTopBannerTextChange = (event) =>
-    setTopBannerText(event.target.value);
-  const handleUseBgSoundChange = () =>
-    setUseBackgroundSound(!useBackgroundSound);
-  const handleBgSoundVolumeChange = (event) =>
-    setBackgroundSoundVolume(formatNumber(backgroundSoundVolume, event));
-  const handleBlurActiveChange = () => setBlurActive(!blurActive);
-  const handleNavigateStoreUnlockTimeChange = (event) =>
-    setNavigateStoreUnlockTime(formatNumber(navigateStoreUnlockTime, event));
-
-  const handleVideoChange = (e) => {
-    const file = e.target.files[0];
-    setVideo(file);
-  };
-
-  const handleIconChange = (e) => {
-    const file = e.target.files[0];
-    setIcon(file);
-  };
-
-  const handleBgSoundChange = (e) => {
-    const file = e.target.files[0];
-    setBackgroundSound(file);
-  };
-
   const formatNumber = (before, event) => {
     const newValue = event.target.value;
     if (isNaN(newValue) && newValue != "-") return before;
     return newValue;
   };
 
-  const addElement = (type) => {
-    let element = {
-      type,
-      id: nextElementID,
-      time: 0,
-      layer: 0,
-      posX: 50,
-      posY: 50,
-      size: 1,
-      opacity: 1,
-    };
-    if (type == 0) {
-      element.name = "Hand";
-      element.navigateStore = false;
-    }
-    if (type == 1) {
-      element.name = "Text";
-      element.content = "Content";
-      element.endTime = 99;
-      element.color = "white";
-    }
-    if (type == 2) {
-      element.name = "Button";
-      element.stopTime = false;
-      element.navigateStore = false;
-      element.content = "MyButton";
-      element.width = 60;
-      element.height = 30;
-      element.fontSize = 8;
-      element.color = "orange";
-      element.textColor = "white";
-      element.borderColor = "white";
-      element.borderRadius = 5;
-      element.borderWidth = 2;
-    }
-    setSelectedElementID(nextElementID);
-    setNextElementID(nextElementID + 1);
-    SortAndSetElements(elements.concat(element));
-  };
-
   const SortAndSetElements = (newElements) => {
     setElements(newElements.sort((a, b) => a.time - b.time));
-  };
-
-  const selectElement = (id) => {
-    setSelectedElementID(id);
-  };
-
-  const editElement = (newValue, field, toggle = false) => {
-    const updatedElement = {
-      ...selectedElement,
-    };
-    if (!toggle) updatedElement[field] = newValue;
-    else updatedElement[field] = !updatedElement[field];
-    SortAndSetElements(
-      elements.map((element) =>
-        element.id === updatedElement.id ? updatedElement : element
-      )
-    );
-  };
-
-  const removeElement = (id) => {
-    setElements(elements.filter((element) => element.id !== id));
-  };
-
-  const refresh = () => {
-    setIframeRefreshCount(iframeRefreshCount + 1);
-  };
-
-  const download = () => {
-    const element = document.createElement("a");
-    element.href = URL.createObjectURL(generatedFile);
-    element.download = "playable.html";
-    document.body.appendChild(element);
-    element.click();
   };
 
   const loadXHR = (url) => {
@@ -427,8 +339,6 @@ const Generator = ({}) => {
       </>
     );
   else if (state == 1) {
-    const fileSize = generatedFile.size / 1000000;
-    const fileSizeValid = fileSize < 5 ? true : false;
     return (
       <div className="row">
         <div className="columnIn4">
@@ -475,7 +385,7 @@ const Generator = ({}) => {
                 <TextInput
                   name={"Android target"}
                   value={androidTarget}
-                  onChange={handleAndroidTargetChange}
+                  onChange={handleAndTargetChange}
                 />
                 <TextInput
                   name={"IOS target"}
@@ -530,304 +440,31 @@ const Generator = ({}) => {
           </div>
         </div>
         <div className="columnIn4">
-          <div className="ContentArea">
-            {selectedElement != null ? (
-              <div className="margin-top-m">
-                <TextInput
-                  name={"Time"}
-                  value={selectedElement.time}
-                  onChange={(e) =>
-                    editElement(formatNumber(selectedElement.time, e), "time")
-                  }
-                  inline={true}
-                />
-                <TextInput
-                  name={"Pos X"}
-                  value={selectedElement.posX}
-                  onChange={(e) =>
-                    editElement(formatNumber(selectedElement.posX, e), "posX")
-                  }
-                  inline={true}
-                />
-                <TextInput
-                  name={"Pos Y"}
-                  value={selectedElement.posY}
-                  onChange={(e) =>
-                    editElement(formatNumber(selectedElement.posY, e), "posY")
-                  }
-                  inline={true}
-                />
-                <TextInput
-                  name={"Layer"}
-                  value={selectedElement.layer}
-                  onChange={(e) =>
-                    editElement(formatNumber(selectedElement.layer, e), "layer")
-                  }
-                  inline={true}
-                />
-                <TextInput
-                  name={"Size"}
-                  value={selectedElement.size}
-                  onChange={(e) =>
-                    editElement(formatNumber(selectedElement.size, e), "size")
-                  }
-                  inline={true}
-                />
-                <TextInput
-                  name={"Opacity"}
-                  value={selectedElement.opacity}
-                  onChange={(e) =>
-                    editElement(
-                      formatNumber(selectedElement.opacity, e),
-                      "opacity"
-                    )
-                  }
-                  inline={true}
-                />
-                {selectedElement.type == 0 ? (
-                  <>
-                    <ToggleInput
-                      name={"Navigate store"}
-                      value={selectedElement.navigateStore}
-                      onChange={(e) => editElement(e, "navigateStore", true)}
-                    />
-                  </>
-                ) : (
-                  <div />
-                )}
-                {selectedElement.type == 1 ? (
-                  <>
-                    <TextInput
-                      name={"Content"}
-                      value={selectedElement.content}
-                      onChange={(e) => editElement(e, "content")}
-                      inline={true}
-                    />
-                    <TextInput
-                      name={"End time"}
-                      value={selectedElement.endTime}
-                      onChange={(e) =>
-                        editElement(
-                          formatNumber(selectedElement.endTime, e),
-                          "endTime"
-                        )
-                      }
-                      inline={true}
-                    />
-                    <TextInput
-                      name={"Color"}
-                      value={selectedElement.color}
-                      onChange={(e) => editElement(e, "color")}
-                      inline={true}
-                    />
-                  </>
-                ) : (
-                  <div />
-                )}
-                {selectedElement.type == 2 ? (
-                  <>
-                    <TextInput
-                      name={"Content"}
-                      value={selectedElement.content}
-                      onChange={(e) => editElement(e, "content")}
-                      inline={true}
-                    />
-                    <TextInput
-                      name={"Width"}
-                      value={selectedElement.width}
-                      onChange={(e) =>
-                        editElement(
-                          formatNumber(selectedElement.width, e),
-                          "width"
-                        )
-                      }
-                      inline={true}
-                    />
-                    <TextInput
-                      name={"Height"}
-                      value={selectedElement.height}
-                      onChange={(e) =>
-                        editElement(
-                          formatNumber(selectedElement.height, e),
-                          "height"
-                        )
-                      }
-                      inline={true}
-                    />
-                    <TextInput
-                      name={"Font size"}
-                      value={selectedElement.fontSize}
-                      onChange={(e) =>
-                        editElement(
-                          formatNumber(selectedElement.fontSize, e),
-                          "fontSize"
-                        )
-                      }
-                      inline={true}
-                    />
-                    <TextInput
-                      name={"Color"}
-                      value={selectedElement.color}
-                      onChange={(e) => editElement(e, "color")}
-                      inline={true}
-                    />
-                    <TextInput
-                      name={"Text color"}
-                      value={selectedElement.textColor}
-                      onChange={(e) => editElement(e, "textColor")}
-                      inline={true}
-                    />
-                    <TextInput
-                      name={"Border color"}
-                      value={selectedElement.borderColor}
-                      onChange={(e) => editElement(e, "borderColor")}
-                      inline={true}
-                    />
-                    <TextInput
-                      name={"Border radius"}
-                      value={selectedElement.borderRadius}
-                      onChange={(e) =>
-                        editElement(
-                          formatNumber(selectedElement.borderRadius, e),
-                          "borderRadius"
-                        )
-                      }
-                      inline={true}
-                    />
-                    <TextInput
-                      name={"Border width"}
-                      value={selectedElement.borderWidth}
-                      onChange={(e) =>
-                        editElement(
-                          formatNumber(selectedElement.borderWidth, e),
-                          "borderWidth"
-                        )
-                      }
-                      inline={true}
-                    />
-                    <ToggleInput
-                      name={"Stop time"}
-                      value={selectedElement.stopTime}
-                      onChange={(e) => editElement(e, "stopTime", true)}
-                    />
-                    {selectedElement.stopTime ? (
-                      <ToggleInput
-                        name={"Navigate store"}
-                        value={selectedElement.navigateStore}
-                        onChange={(e) => editElement(e, "navigateStore", true)}
-                      />
-                    ) : (
-                      <div />
-                    )}
-                  </>
-                ) : (
-                  <div />
-                )}
-              </div>
-            ) : (
-              <div />
-            )}
-          </div>
+          <ElementInspector
+            formatNumber={formatNumber}
+            selectedElementID={selectedElementID}
+            elements={elements}
+            SortAndSetElements={SortAndSetElements}
+          />
         </div>
         <div className="columnIn4">
-          <div className="ContentArea">
-            {memoizedVideo}
-            {video && videoRef.current ? (
-              <div
-                className="row text-center"
-                style={{ fontSize: "1.3rem", fontWeight: "bold" }}
-              >
-                {videoRef.current.currentTime +
-                  " / " +
-                  videoRef.current.duration}
-              </div>
-            ) : (
-              <div></div>
-            )}
-          </div>
-          {elements.map((element, n) => {
-            return (
-              <div className="Element" key={n}>
-                {element.time + " " + element.name}
-                <button
-                  className="ElementButton"
-                  onClick={() => removeElement(element.id)}
-                >
-                  Delete
-                </button>
-                <button
-                  className="ElementButton"
-                  onClick={() => selectElement(element.id)}
-                >
-                  Edit
-                </button>
-              </div>
-            );
-          })}
-          <div className="row flex-container">
-            <button
-              className="MiniButton"
-              style={{ fontSize: "1.3rem" }}
-              onClick={() => addElement(0)}
-            >
-              Add
-              <br />
-              Hand
-            </button>
-            <button
-              className="MiniButton"
-              style={{ fontSize: "1.3rem" }}
-              onClick={() => addElement(1)}
-            >
-              Add
-              <br />
-              Text
-            </button>
-            <button
-              className="MiniButton"
-              style={{ fontSize: "1.3rem" }}
-              onClick={() => addElement(2)}
-            >
-              Add
-              <br />
-              Button
-            </button>
-          </div>
+          <VideoController
+            memoizedVideo={memoizedVideo}
+            video={video}
+            videoRef={videoRef}
+          />
+          <ElementMenu
+            SortAndSetElements={SortAndSetElements}
+            setSelectedElementID={setSelectedElementID}
+            setElements={setElements}
+            elements={elements}
+          />
         </div>
         <div className="columnIn4">
-          <div className="row flex-container margin-top-m">
-            <button
-              className="MiniButton"
-              style={{
-                backgroundColor: !fileSizeValid ? "red" : "green",
-                fontSize: "1.3rem",
-              }}
-              onClick={() => {}}
-            >
-              {fileSize.toString().substring(0, 5)}
-              <br />
-              MB
-            </button>
-            <button className="MiniButton" onClick={() => refresh()}>
-              <i className="fa-solid fa-rotate-right"></i>
-            </button>
-            <button className="MiniButton" onClick={() => download()}>
-              <i className="fa-solid fa-download"></i>
-            </button>
-          </div>
-          <div className="row text-center">
-            <button className="SubmitButton" onClick={applyDataToNewFile}>
-              Apply
-            </button>
-          </div>
-          <div className="row">
-            <div className="mobile-phone">
-              <div className="brove">
-                <span className="speaker"></span>
-              </div>
-              {memoizedIframe}
-            </div>
-          </div>
+          <Preview
+            generatedFile={generatedFile}
+            applyDataToNewFile={applyDataToNewFile}
+          />
         </div>
       </div>
     );
