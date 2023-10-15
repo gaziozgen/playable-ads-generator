@@ -1,4 +1,4 @@
-function TextInput({ name, value, onChange, req = false, inline = false, password = false }) {
+function ColorInput({ name, value, onChange, inline = false}) {
   return (
     <div className={inline? "InlineContainer": ""}>
       <div className={inline? "InlineLabel": ""}>
@@ -6,16 +6,15 @@ function TextInput({ name, value, onChange, req = false, inline = false, passwor
       </div>
       <div className={inline? "InlineInput": ""}>
         <input
-          type={password? "password": ""}
-          className="TextInput"
+          type="color"
+          className="ColorInput"
           placeholder={name}
           value={value}
           onChange={onChange}
-          required={req}
         />
       </div>
     </div>
   );
 }
 
-export default TextInput;
+export default ColorInput;

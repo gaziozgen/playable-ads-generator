@@ -33,7 +33,7 @@ function Preview({ applyDataToNewFile, generatedFile }) {
   const fileSizeValid = fileSize < 5 ? true : false;
   return (
     <div>
-      <div className="row flex-container margin-top-m">
+      <div className="row flex-container margin-top-s">
         <button
           className="MiniButton"
           style={{

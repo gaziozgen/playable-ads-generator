@@ -1,4 +1,5 @@
 import TextInput from "./TextInput";
+import ColorInput from "./ColorInput";
 import ToggleInput from "./ToggleInput";
 
 function ElementInspector({
@@ -81,7 +82,7 @@ function ElementInspector({
               <ToggleInput
                 name={"Navigate store"}
                 value={selectedElement.navigateStore}
-                onChange={(e) => editElement(e, "navigateStore", true)}
+                onChange={(e) => editElement(e.target.value, "navigateStore", true)}
               />
             </>
           ) : (
@@ -92,7 +93,7 @@ function ElementInspector({
               <TextInput
                 name={"Content"}
                 value={selectedElement.content}
-                onChange={(e) => editElement(e, "content")}
+                onChange={(e) => editElement(e.target.value, "content")}
                 inline={true}
               />
               <TextInput
@@ -106,10 +107,10 @@ function ElementInspector({
                 }
                 inline={true}
               />
-              <TextInput
+              <ColorInput
                 name={"Color"}
                 value={selectedElement.color}
-                onChange={(e) => editElement(e, "color")}
+                onChange={(e) => editElement(e.target.value, "color")}
                 inline={true}
               />
             </>
@@ -121,7 +122,7 @@ function ElementInspector({
               <TextInput
                 name={"Content"}
                 value={selectedElement.content}
-                onChange={(e) => editElement(e, "content")}
+                onChange={(e) => editElement(e.target.value, "content")}
                 inline={true}
               />
               <TextInput
@@ -151,22 +152,22 @@ function ElementInspector({
                 }
                 inline={true}
               />
-              <TextInput
+              <ColorInput
                 name={"Color"}
                 value={selectedElement.color}
-                onChange={(e) => editElement(e, "color")}
+                onChange={(e) => editElement(e.target.value, "color")}
                 inline={true}
               />
-              <TextInput
+              <ColorInput
                 name={"Text color"}
                 value={selectedElement.textColor}
-                onChange={(e) => editElement(e, "textColor")}
+                onChange={(e) => editElement(e.target.value, "textColor")}
                 inline={true}
               />
-              <TextInput
+              <ColorInput
                 name={"Border color"}
                 value={selectedElement.borderColor}
-                onChange={(e) => editElement(e, "borderColor")}
+                onChange={(e) => editElement(e.target.value, "borderColor")}
                 inline={true}
               />
               <TextInput
@@ -194,13 +195,13 @@ function ElementInspector({
               <ToggleInput
                 name={"Stop time"}
                 value={selectedElement.stopTime}
-                onChange={(e) => editElement(e, "stopTime", true)}
+                onChange={(e) => editElement(e.target.value, "stopTime", true)}
               />
               {selectedElement.stopTime ? (
                 <ToggleInput
                   name={"Navigate store"}
                   value={selectedElement.navigateStore}
-                  onChange={(e) => editElement(e, "navigateStore", true)}
+                  onChange={(e) => editElement(e.target.value, "navigateStore", true)}
                 />
               ) : (
                 <div />

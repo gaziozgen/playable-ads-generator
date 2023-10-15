@@ -27,7 +27,7 @@ function ElementMenu({
       element.name = "Text";
       element.content = "Content";
       element.endTime = 99;
-      element.color = "white";
+      element.color = "#FFFFFF";
     }
     if (type == 2) {
       element.name = "Button";
@@ -37,9 +37,9 @@ function ElementMenu({
       element.width = 60;
       element.height = 30;
       element.fontSize = 8;
-      element.color = "orange";
-      element.textColor = "white";
-      element.borderColor = "white";
+      element.color = "#DF910C";
+      element.textColor = "#FFFFFF";
+      element.borderColor = "#FFFFFF";
       element.borderRadius = 5;
       element.borderWidth = 2;
     }

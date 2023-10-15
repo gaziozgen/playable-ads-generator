@@ -10,7 +10,7 @@ import VideoController from "./VideoController";
 import ElementInspector from "./ElementInspector";
 import ElementMenu from "./ElementMenu";
 
-const Generator = ({}) => {
+const Generator = ({ user, setUser }) => {
   const [generatedFile, setGeneratedFile] = useState();
   const [state, setState] = useState(0);
   const [isBusy, setIsBusy] = useState(false);
@@ -77,7 +77,6 @@ const Generator = ({}) => {
   const [elements, setElements] = useState([]);
   const [selectedElementID, setSelectedElementID] = useState(null); // alınacak
 
-
   const memoizedVideo = useMemo(
     () =>
       video ? (
@@ -142,6 +141,11 @@ const Generator = ({}) => {
       fileReader.onerror = () => console.error(name + " reading error!!");
       fileReader.readAsDataURL(file);
     });
+  };
+
+  const logout = () => {
+    localStorage.clear();
+    setUser(null);
   };
 
   const finalizeFile = (mainText, aspectRatio) => {
@@ -288,6 +292,9 @@ const Generator = ({}) => {
     return (
       <>
         <div className="Header">Playable Ad Generator</div>
+        <button className="SubmitButton" onClick={logout}>
+          logout from {user.username}
+        </button>
         <form onSubmit={applyDataToNewFile} className="MiniContainer">
           <div className="ContentArea">
             <TextInput
@@ -461,6 +468,9 @@ const Generator = ({}) => {
           />
         </div>
         <div className="columnIn4">
+          <button className="SubmitButton" onClick={logout}>
+            logout from {user.username}
+          </button>
           <Preview
             generatedFile={generatedFile}
             applyDataToNewFile={applyDataToNewFile}
